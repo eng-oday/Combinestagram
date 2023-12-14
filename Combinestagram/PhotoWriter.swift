@@ -10,8 +10,9 @@ class PhotoWriter {
     case couldNotSavePhoto
   }
 
-  static func save(_ image:UIImage) -> Observable<String> {
-    return Observable.create ({ observer in
+  static func save(_ image:UIImage) -> Single<String> {
+    
+    return Single.create { observer in
       var savedAssetId:String?
      
         
@@ -22,16 +23,16 @@ class PhotoWriter {
         } completionHandler: { success, error in
           DispatchQueue.main.async {
             if success , let id = savedAssetId{
-              observer.onNext(id)
-              observer.onCompleted()
+
+              observer(.success(id))
             }else {
-              observer.onError(error ?? Errors.couldNotSavePhoto)
+              observer(.failure(error ?? Errors.couldNotSavePhoto))
             }
           }
         }
 
       return Disposables.create()
-    })
+    }
   }
 
 }
