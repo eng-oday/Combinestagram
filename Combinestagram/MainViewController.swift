@@ -72,12 +72,13 @@ class MainViewController: UIViewController {
     }.disposed(by: disposeBag)
 
   }
-
+  
   func showMessage(_ title: String, description: String? = nil) {
-    let alert = UIAlertController(title: title, message: description, preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "Close", style: .default, handler: { [weak self] _ in self?.dismiss(animated: true, completion: nil)}))
-    present(alert, animated: true, completion: nil)
+    alert(title, text: description)
+      .subscribe()
+      .disposed(by: disposeBag)
   }
+
   
   private func updateUI(with photos:[UIImage]){
     let checkPhotoIsGreaterThan0  = photos.count > 0
@@ -86,4 +87,23 @@ class MainViewController: UIViewController {
     itemAdd.isEnabled     = photos.count < 6
     title                 = checkPhotoIsGreaterThan0 ? "\(photos.count) photos" : "Collage"
   }
+}
+
+
+
+extension UIViewController {
+  
+  func alert(_ title: String, text: String?) -> Completable {
+    return Completable.create { [weak self] completable in
+      let alertVC = UIAlertController(title: title, message: text, preferredStyle: .alert)
+      alertVC.addAction(UIAlertAction(title: "Close", style: .default, handler: {_ in
+        completable(.completed)
+      }))
+      self?.present(alertVC, animated: true, completion: nil)
+      return Disposables.create {
+        self?.dismiss(animated: true)
+      }
+    }
+  }
+
 }
