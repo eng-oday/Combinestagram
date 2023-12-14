@@ -10,6 +10,7 @@ class PhotoWriter {
     case couldNotSavePhoto
   }
 
+  // 1. Challenge1 -> Use Single
   static func save(_ image:UIImage) -> Single<String> {
     
     return Single.create { observer in
