@@ -34,15 +34,29 @@ class PhotosViewController: UICollectionViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let authorized = PHPhotoLibrary.authorized
+    let authorized = PHPhotoLibrary.authorized.share()
     
     authorized
       .skip(while: {$0 == false})
-      .take(1)
       .subscribe { [weak self] _ in
         self?.photos = PhotosViewController.loadPhotos()
         DispatchQueue.main.async {
           self?.collectionView.reloadData()
+        }
+      }.disposed(by: disposeBag)
+    
+    authorized
+    // there is no reason to use these two operators one of them is enough
+    //( skip - takeLast)
+      //.skip(1)
+      .takeLast(1)
+      .filter({
+        print($0)
+        return $0 == false
+      })
+      .subscribe { [weak self] _ in
+        DispatchQueue.main.async{
+          self?.errorMessage()
         }
       }.disposed(by: disposeBag)
   }
@@ -51,6 +65,16 @@ class PhotosViewController: UICollectionViewController {
     super.viewWillDisappear(animated)
     selectedPhotoSubject.onCompleted()
 
+  }
+  
+  private func errorMessage() {
+    alert("No access to Camera Roll",
+      text: "You can grant access to Combinestagram from the Settings app")
+      .subscribe(onDisposed: { [weak self] in
+        self?.dismiss(animated: true, completion: nil)
+        _ = self?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
   }
 
   // MARK: UICollectionView
