@@ -5,3 +5,5 @@ IOS App That Using RxSwift and Apply:
 - Behavior Relay
 - Custom Observable
 - Traits ( Single - Maybe - Completable)
+- Share Operator
+- Filter ( IgnoreAllElements - Filter - Take ...etc)
