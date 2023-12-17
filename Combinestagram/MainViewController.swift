@@ -14,7 +14,7 @@ class MainViewController: UIViewController {
   
   private let disposeBag        = DisposeBag()
   private let images            = BehaviorRelay<[UIImage]>(value:[])
-
+  private var imageCache        = [Int]()
   override func viewDidLoad() {
     super.viewDidLoad()
     subscribeToImagesToSetupUi()
@@ -23,6 +23,7 @@ class MainViewController: UIViewController {
   
   @IBAction func actionClear() {
     images.accept([])
+    imageCache = []
   }
 
   @IBAction func actionSave() {
@@ -48,14 +49,42 @@ class MainViewController: UIViewController {
     navigationController!.pushViewController(photosViewController, animated:
     true)
     
-    photosViewController.selectedPhotos.subscribe { [weak self] image in
+    // Share this Observable to different subscription
+    // so u can with this observable create 2 subscription and each one is alone
+    
+    let newPhoto  = photosViewController.selectedPhotos.share()
+    
+    
+
+    newPhoto
+      .filter {  image in
+      // 1.Filter to just get image with width greater than height
+      return image.size.width > image.size.height
+    }
+    .filter({  [weak self] image in
+      // 2. second filter prevent get same image twice by comapring it by his data
+      let length = image.pngData()?.count ?? 0
+      guard self?.imageCache.contains(length) == false else {
+        return false
+      }
+      self?.imageCache.append(length)
+      return true
+    })
+    .subscribe { [weak self] image in
       guard let self else {return}
       let arrayOfImages = self.images.value + [image]
       self.images.accept(arrayOfImages)
-    }onDisposed: { 
+    }onDisposed: {
       print("completed photo selection")
     }
     .disposed(by: disposeBag)
+
+    
+    newPhoto.ignoreElements()
+      .subscribe(onCompleted: { [weak self] in
+      self?.updateNavigationIcon()
+    }).disposed(by: disposeBag)
+
   }
   
   private func subscribeToImagesToSetupUi(){
@@ -86,6 +115,15 @@ class MainViewController: UIViewController {
     buttonClear.isEnabled = checkPhotoIsGreaterThan0
     itemAdd.isEnabled     = photos.count < 6
     title                 = checkPhotoIsGreaterThan0 ? "\(photos.count) photos" : "Collage"
+  }
+  
+  private func updateNavigationIcon(){
+    let icon = imagePreview.image?
+      .scaled(CGSize(width: 22, height: 22))
+      .withRenderingMode(.alwaysOriginal)
+    navigationItem.leftBarButtonItem = UIBarButtonItem(image: icon,
+                                                       style: .done,
+                                                       target: nil, action: nil)
   }
 }
 
