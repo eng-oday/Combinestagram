@@ -11,6 +11,7 @@ class PhotosViewController: UICollectionViewController {
   private lazy var photos = PhotosViewController.loadPhotos()
   private lazy var imageManager = PHCachingImageManager()
   private let selectedPhotoSubject  = PublishSubject<UIImage>()
+  let disposeBag                    = DisposeBag()
   
   // MARK: public properties
   var selectedPhotos:Observable<UIImage> {
@@ -32,7 +33,18 @@ class PhotosViewController: UICollectionViewController {
   // MARK: View Controller
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    
+    let authorized = PHPhotoLibrary.authorized
+    
+    authorized
+      .skip(while: {$0 == false})
+      .take(1)
+      .subscribe { [weak self] _ in
+        self?.photos = PhotosViewController.loadPhotos()
+        DispatchQueue.main.async {
+          self?.collectionView.reloadData()
+        }
+      }.disposed(by: disposeBag)
   }
 
   override func viewWillDisappear(_ animated: Bool) {

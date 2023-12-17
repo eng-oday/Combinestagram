@@ -18,6 +18,7 @@
 		9CE7E5E61DE5A40A00C8BA5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE7E5E51DE5A40A00C8BA5A /* Assets.xcassets */; };
 		9CE7E5E91DE5A40A00C8BA5A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CE7E5E71DE5A40A00C8BA5A /* LaunchScreen.storyboard */; };
 		9CE7E5F11DE5A94600C8BA5A /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9CE7E5F01DE5A94600C8BA5A /* Podfile */; };
+		CEDA49E82B2F7C39005F8425 /* PHPhotoLibrary+rx.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA49E72B2F7C39005F8425 /* PHPhotoLibrary+rx.swift.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		9CE7E5E81DE5A40A00C8BA5A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9CE7E5EA1DE5A40A00C8BA5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CE7E5F01DE5A94600C8BA5A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		CEDA49E72B2F7C39005F8425 /* PHPhotoLibrary+rx.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHPhotoLibrary+rx.swift.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 		9CE7E5DB1DE5A40900C8BA5A /* Combinestagram */ = {
 			isa = PBXGroup;
 			children = (
+				CEDA49E62B2F7C27005F8425 /* Extensions */,
 				9CDD7B0A1DE6E38E0058B2D5 /* Classes */,
 				9CDD7B091DE6E37C0058B2D5 /* Assets */,
 				9CE7E5DE1DE5A40A00C8BA5A /* MainViewController.swift */,
@@ -119,6 +122,14 @@
 				9CDD7B071DE6D7ED0058B2D5 /* PhotoCell.swift */,
 			);
 			path = Combinestagram;
+			sourceTree = "<group>";
+		};
+		CEDA49E62B2F7C27005F8425 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CEDA49E72B2F7C39005F8425 /* PHPhotoLibrary+rx.swift.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,6 +259,7 @@
 				9CDD7B041DE5AABE0058B2D5 /* UIImage+Collage.swift in Sources */,
 				9CDD7B081DE6D7ED0058B2D5 /* PhotoCell.swift in Sources */,
 				9CDD7B061DE5BC660058B2D5 /* PhotosViewController.swift in Sources */,
+				CEDA49E82B2F7C39005F8425 /* PHPhotoLibrary+rx.swift.swift in Sources */,
 				9CDD7B0C1DE6E3D30058B2D5 /* PhotoWriter.swift in Sources */,
 				9CE7E5DF1DE5A40A00C8BA5A /* MainViewController.swift in Sources */,
 				9CE7E5DD1DE5A40A00C8BA5A /* AppDelegate.swift in Sources */,
