@@ -47,7 +47,8 @@ class PhotosViewController: UICollectionViewController {
     
     authorized
     // there is no reason to use these two operators one of them is enough
-      .skip(1)
+     // .skip(1)
+      .distinctUntilChanged()
       .takeLast(1)
       .filter({
         print($0)
@@ -70,7 +71,8 @@ class PhotosViewController: UICollectionViewController {
   
   private func errorMessage() {
     alert("No access to Camera Roll",
-      text: "You can grant access to Combinestagram from the Settings app")
+          text: "You can grant access to Combinestagram from the Settings app")
+    .timeout(.seconds(5), scheduler: MainScheduler.instance)
       .subscribe(onDisposed: { [weak self] in
         self?.dismiss(animated: true, completion: nil)
         _ = self?.navigationController?.popViewController(animated: true)

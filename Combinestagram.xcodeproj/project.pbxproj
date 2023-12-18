@@ -19,6 +19,7 @@
 		9CE7E5E91DE5A40A00C8BA5A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CE7E5E71DE5A40A00C8BA5A /* LaunchScreen.storyboard */; };
 		9CE7E5F11DE5A94600C8BA5A /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9CE7E5F01DE5A94600C8BA5A /* Podfile */; };
 		CEDA49E82B2F7C39005F8425 /* PHPhotoLibrary+rx.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA49E72B2F7C39005F8425 /* PHPhotoLibrary+rx.swift.swift */; };
+		F8A666CF2B30423C00BB0336 /* UiViewController +Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A666CE2B30423C00BB0336 /* UiViewController +Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		9CE7E5EA1DE5A40A00C8BA5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CE7E5F01DE5A94600C8BA5A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CEDA49E72B2F7C39005F8425 /* PHPhotoLibrary+rx.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHPhotoLibrary+rx.swift.swift"; sourceTree = "<group>"; };
+		F8A666CE2B30423C00BB0336 /* UiViewController +Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UiViewController +Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				CEDA49E72B2F7C39005F8425 /* PHPhotoLibrary+rx.swift.swift */,
+				F8A666CE2B30423C00BB0336 /* UiViewController +Ext.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				9CDD7B0C1DE6E3D30058B2D5 /* PhotoWriter.swift in Sources */,
 				9CE7E5DF1DE5A40A00C8BA5A /* MainViewController.swift in Sources */,
 				9CE7E5DD1DE5A40A00C8BA5A /* AppDelegate.swift in Sources */,
+				F8A666CF2B30423C00BB0336 /* UiViewController +Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
