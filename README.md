@@ -7,3 +7,5 @@ IOS App That Using RxSwift and Apply:
 - Traits ( Single - Maybe - Completable)
 - Share Operator
 - Filter ( IgnoreAllElements - Filter - Take ...etc)
+- TimeOut Operator
+  
