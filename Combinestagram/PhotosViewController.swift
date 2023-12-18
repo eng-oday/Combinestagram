@@ -38,27 +38,28 @@ class PhotosViewController: UICollectionViewController {
     
     authorized
       .skip(while: {$0 == false})
-      .subscribe { [weak self] _ in
+      .subscribe { [weak self] auth in
         self?.photos = PhotosViewController.loadPhotos()
         DispatchQueue.main.async {
           self?.collectionView.reloadData()
-        }
+      }
       }.disposed(by: disposeBag)
     
     authorized
     // there is no reason to use these two operators one of them is enough
-    //( skip - takeLast)
-      //.skip(1)
+      .skip(1)
       .takeLast(1)
       .filter({
         print($0)
         return $0 == false
       })
-      .subscribe { [weak self] _ in
-        DispatchQueue.main.async{
-          self?.errorMessage()
-        }
-      }.disposed(by: disposeBag)
+      .subscribe(onNext: { [weak self] auth in
+        print(auth)
+        guard let errorMessage = self?.errorMessage else { return }
+        DispatchQueue.main.async(execute: errorMessage)
+        
+      })
+      .disposed(by: disposeBag)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
