@@ -8,4 +8,5 @@ IOS App That Using RxSwift and Apply:
 - Share Operator
 - Filter ( IgnoreAllElements - Filter - Take ...etc)
 - TimeOut Operator
+- Throttle Operator
   
