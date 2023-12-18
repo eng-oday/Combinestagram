@@ -15,6 +15,7 @@ class MainViewController: UIViewController {
   private let disposeBag        = DisposeBag()
   private let images            = BehaviorRelay<[UIImage]>(value:[])
   private var imageCache        = [Int]()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     subscribeToImagesToSetupUi()
@@ -50,25 +51,21 @@ class MainViewController: UIViewController {
     navigationController!.pushViewController(photosViewController, animated:
                                               true)
     
-    /* Share this Observable to different subscription , so u can with this observable create 2 subscription and each one is alone
-     rather than create two subscription without share , so it will create two obsevables for every subscription
-     */
+    
+    
     let newPhoto  = photosViewController.selectedPhotos.share()
     
     
-//    // 1. FIRST SUBSCRIPTION
+    // 1. FIRST SUBSCRIPTION
     newPhoto
       .take(while: { [weak self] _ in
-        // 1. filter to prevent get more than 6 images
-        return self?.images.value.count ?? 0 < 6
+        return self?.images.value.count ?? 0 < 6         // 1.filter to prevent get more than 6 images
       })
       .filter {  image in
-        // 2.Filter to just get image with width greater than height
-        return image.size.width > image.size.height
+        return image.size.width > image.size.height      // 2.Filter to just get image with width greater than height
       }
       .filter({  [weak self] image in
-        // 3. second filter prevent get same image twice by comapring it by his data
-        let length = image.pngData()?.count ?? 0
+        let length = image.pngData()?.count ?? 0        // 3.filter prevent get same image twice by comapring it by his data
         guard self?.imageCache.contains(length) == false else {
           return false
         }
@@ -84,7 +81,8 @@ class MainViewController: UIViewController {
       }
       .disposed(by: disposeBag)
     
-    //2. SECOND SUBSCRIPTION
+    // 2. SECOND SUBSCRIPTION
+    
     newPhoto.ignoreElements()
       .subscribe(onCompleted: { [weak self] in
         self?.updateNavigationIcon()
@@ -109,7 +107,7 @@ class MainViewController: UIViewController {
     
   }
   
-  func showMessage(_ title: String, description: String? = nil) {
+  private func showMessage(_ title: String, description: String? = nil) {
     alert(title, text: description)
       .subscribe()
       .disposed(by: disposeBag)
@@ -128,7 +126,6 @@ class MainViewController: UIViewController {
     let icon = imagePreview.image?
       .scaled(CGSize(width: 22, height: 22))
       .withRenderingMode(.alwaysOriginal)
-    
     navigationItem.leftBarButtonItem = UIBarButtonItem(image: icon,
                                                        style: .done,
                                                        target: nil, action: nil)

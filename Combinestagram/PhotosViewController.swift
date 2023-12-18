@@ -8,10 +8,10 @@ import RxRelay
 class PhotosViewController: UICollectionViewController {
 
   // MARK: private properties
-  private lazy var photos = PhotosViewController.loadPhotos()
-  private lazy var imageManager = PHCachingImageManager()
-  private let selectedPhotoSubject  = PublishSubject<UIImage>()
-  let disposeBag                    = DisposeBag()
+  private lazy var photos               = PhotosViewController.loadPhotos()
+  private lazy var imageManager         = PHCachingImageManager()
+  private let selectedPhotoSubject      = PublishSubject<UIImage>()
+  private let disposeBag                = DisposeBag()
   
   // MARK: public properties
   var selectedPhotos:Observable<UIImage> {
@@ -24,49 +24,51 @@ class PhotosViewController: UICollectionViewController {
                   height: cellSize.height * UIScreen.main.scale)
   }()
 
-  static func loadPhotos() -> PHFetchResult<PHAsset> {
-    let allPhotosOptions = PHFetchOptions()
-    allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-    return PHAsset.fetchAssets(with: allPhotosOptions)
-  }
 
-  // MARK: View Controller
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    let authorized = PHPhotoLibrary.authorized.share()
-    
-    authorized
-      .skip(while: {$0 == false})
-      .subscribe { [weak self] auth in
-        self?.photos = PhotosViewController.loadPhotos()
-        DispatchQueue.main.async {
-          self?.collectionView.reloadData()
-      }
-      }.disposed(by: disposeBag)
-    
-    authorized
-    // there is no reason to use these two operators one of them is enough
-     // .skip(1)
-      .distinctUntilChanged()
-      .takeLast(1)
-      .filter({
-        print($0)
-        return $0 == false
-      })
-      .subscribe(onNext: { [weak self] auth in
-        print(auth)
-        guard let errorMessage = self?.errorMessage else { return }
-        DispatchQueue.main.async(execute: errorMessage)
-        
-      })
-      .disposed(by: disposeBag)
+    setupAccessPermission()
   }
+
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     selectedPhotoSubject.onCompleted()
-
+  }
+  
+    
+    private func setupAccessPermission(){
+      let authorized = PHPhotoLibrary.authorized.share()
+      
+      authorized
+        .skip(while: {$0 == false})
+        .subscribe { [weak self] auth in
+          self?.photos = PhotosViewController.loadPhotos()
+          DispatchQueue.main.async {
+            self?.collectionView.reloadData()
+        }
+        }.disposed(by: disposeBag)
+      
+      authorized
+        .distinctUntilChanged()
+        .takeLast(1)
+        .filter({
+          print($0)
+          return $0 == false
+        })
+        .subscribe(onNext: { [weak self] auth in
+          print(auth)
+          guard let errorMessage = self?.errorMessage else { return }
+          DispatchQueue.main.async(execute: errorMessage)
+          
+        })
+        .disposed(by: disposeBag)
+    }
+  
+  private static func loadPhotos() -> PHFetchResult<PHAsset> {
+    let allPhotosOptions = PHFetchOptions()
+    allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+    return PHAsset.fetchAssets(with: allPhotosOptions)
   }
   
   private func errorMessage() {
@@ -79,9 +81,15 @@ class PhotosViewController: UICollectionViewController {
       })
       .disposed(by: disposeBag)
   }
+}
 
-  // MARK: UICollectionView
 
+
+
+// MARK: - Collection View
+
+
+extension PhotosViewController{
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return photos.count
   }
