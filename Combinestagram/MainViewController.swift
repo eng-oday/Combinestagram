@@ -24,6 +24,7 @@ class MainViewController: UIViewController {
   @IBAction func actionClear() {
     images.accept([])
     imageCache = []
+    navigationItem.leftBarButtonItem = .none
   }
   
   @IBAction func actionSave() {
@@ -127,6 +128,7 @@ class MainViewController: UIViewController {
     let icon = imagePreview.image?
       .scaled(CGSize(width: 22, height: 22))
       .withRenderingMode(.alwaysOriginal)
+    
     navigationItem.leftBarButtonItem = UIBarButtonItem(image: icon,
                                                        style: .done,
                                                        target: nil, action: nil)
