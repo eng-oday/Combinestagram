@@ -55,7 +55,7 @@ class MainViewController: UIViewController {
     let newPhoto  = photosViewController.selectedPhotos.share()
     
     
-    // 1. FIRST SUBSCRIPTION
+//    // 1. FIRST SUBSCRIPTION
     newPhoto
       .take(while: { [weak self] _ in
         // 1. filter to prevent get more than 6 images
@@ -92,7 +92,9 @@ class MainViewController: UIViewController {
   }
   
   private func subscribeToImagesToSetupUi(){
-    images.asObservable().subscribe { [weak self ] photos in
+    images.asObservable()
+      .throttle(.seconds(3), scheduler: MainScheduler.instance)
+      .subscribe { [weak self ] photos in
       guard let self else {return}
       self.updateUI(with: photos)
     }.disposed(by: disposeBag)
